@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>B-mode Image Display</title>
+</head>
+<body>
+    <h1>B-mode Image Display</h1>
+    <img id="bmode-image" src="data:image/png;base64,{{ image_data }}" alt="B-mode Image">
+    <br>
+    <form id="coordinates-form">
+        <input type="hidden" id="point1" name="point1" value="">
+        <input type="hidden" id="point2" name="point2" value="">
+        <button type="button" id="select-points-button">Select Points</button>
+        <button type="submit" id="submit-button" disabled>Submit</button>
+    </form>
+    <script>
+        var selectedPoints = [];
+        var selectPointsButton = document.getElementById('select-points-button');
+        var submitButton = document.getElementById('submit-button');
+        
+        selectPointsButton.addEventListener('click', function() {
+            selectedPoints = [];
+            selectPointsButton.disabled = true;
+            submitButton.disabled = true;
+        });
+        
+        var bmodeImage = document.getElementById('bmode-image');
+        bmodeImage.addEventListener('click', function(event) {
+            var x = event.offsetX;
+            var y = event.offsetY;
+            selectedPoints.push({x: x, y: y});
+            
+            if (selectedPoints.length === 2) {
+                document.getElementById('point1').value = selectedPoints[0].x + ',' + selectedPoints[0].y;
+                document.getElementById('point2').value = selectedPoints[1].x + ',' + selectedPoints[1].y;
+                submitButton.disabled = false;
+            }
+        });
+        
+        submitButton.addEventListener('click', function() {
+            var point1Input = document.getElementById('point1');
+            var point2Input = document.getElementById('point2');
+            
+            // Set the values of point1Input and point2Input
+            
+            // Construct the URL for the result page with parameters
+            //var resultUrl = '/result?point1=' + encodeURIComponent(point1Input.value) + '&point2=' + encodeURIComponent(point2Input.value);
+            var resultUrl = '/result'
+            // Redirect to the result page
+            window.location.href = resultUrl;
+        });
+    </script>
+</body>
+</html>
